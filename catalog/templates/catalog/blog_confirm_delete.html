@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Delete Blog: {{ blog }}</h1>
+
+{% if blog.blog_set.all %}
+
+<p>You can't delete this author until all their books have been deleted:</p>
+<ul>
+  {% for blog in blog.blog_set.all %}
+    <li><a href="{% url 'blog_detail' blog.pk %}">{{blog}}</a></li>
+  {% endfor %}
+</ul>
+
+{% else %}
+<p>Are you sure you want to delete the blogger?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" action="" value="Yes, delete.">
+</form>
+{% endif %}
+
+{% endblock %}

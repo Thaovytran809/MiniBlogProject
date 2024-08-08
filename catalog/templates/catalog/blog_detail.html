@@ -1,0 +1,37 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<h1>{{blog.title}}</h1>
+<p><strong>Post date: </strong>{{blog.post_date}}</p>
+<p><strong>Blogger: </strong>{{blog.blogger}}</p>
+<p><strong>Description: </strong>
+    <br />
+    {{blog.content}}</p>
+<div style='margin-left:0px;margin-top:20px; background-color: white'>
+    <h4>Comments</h4>
+    <hr />
+  {% if user.is_authenticated %}
+    {% for comment in blog.comments.all %}
+    <p><strong>{{comment.user.username}}-</strong>({{comment.created_date|date:"Y-m-d H:i"}}) - {{comment.text}}</p>
+    {% endfor%}
+    <p><a href="{% url 'comment_create' pk=blog.pk %}" style="color: #104164"><strong>Create comment</strong></a></p>
+  {% else %}
+    <p><a href="{% url "login" %}">Login</a> to view and comment</p>
+  {% endif%}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+  {{ block.super }}
+
+  {% if perms.catalog.change_blog or perms.catalog.delete_blog %}
+  <hr>
+  <ul class="sidebar-nav">
+    {% if perms.catalog.change_blog %}
+      <li><a href="{% url 'blog_update' blog.id %}">Update blog</a></li>
+    {% endif %}
+    {% if perms.catalog.delete_blog %}
+      <li><a href="{% url 'blog_delete' pk=blog.id %}">Delete blog</a></li>
+    {% endif %}
+    </ul>
+  {% endif %}
+{% endblock %}
