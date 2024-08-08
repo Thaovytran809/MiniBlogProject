@@ -1,0 +1,2 @@
+# MiniBlogProject
+Django Project
